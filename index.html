@@ -84,27 +84,7 @@
             margin: 0 auto;
         }
 
-        .box {
-            border: 1px solid #333;
-            background-color: rgba(20, 20, 20, 0.8);
-            padding: 20px;
-            margin-bottom: 30px;
-            transition: 0.3s;
-        }
-
-        /* マウスを乗せた時のエフェクト */
-        .box:hover {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(201, 255, 0, 0.2);
-        }
-
-        h2 {
-            border-left: 5px solid var(--accent-color);
-            padding-left: 10px;
-            font-size: 1.5rem;
-            margin-top: 0;
-        }
-
+        /* --- リンクのスタイル --- */
         a {
             color: var(--accent-color);
             text-decoration: none;
@@ -115,49 +95,50 @@
             background-color: var(--accent-color);
             color: var(--bg-color);
         }
-      /* --- 疑似ウィンドウの基本スタイル --- */
-.fake-window {
-    position: absolute; /* 画面上の自由な位置に配置 */
-    background-color: var(--bg-color);
-    border: 2px solid var(--accent-color);
-    width: 280px;
-    box-shadow: 4px 4px 0px rgba(201, 255, 0, 0.4); /* レトロな影 */
-    z-index: 100;
-}
 
-/* ウィンドウ上部のバー */
-.window-header {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
-    padding: 4px 10px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: grab;
-}
+        /* --- 疑似ウィンドウの基本スタイル --- */
+        .fake-window {
+            position: absolute; /* 画面上の自由な位置に配置 */
+            background-color: var(--bg-color);
+            border: 2px solid var(--accent-color);
+            width: 280px;
+            box-shadow: 4px 4px 0px rgba(201, 255, 0, 0.4); /* レトロな影 */
+            z-index: 100;
+        }
 
-/* バツボタン */
-.close-btn {
-    cursor: pointer;
-}
+        /* ウィンドウ上部のバー */
+        .window-header {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            padding: 4px 10px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: grab;
+        }
 
-.window-content {
-    padding: 15px;
-    font-size: 0.9rem;
-}
+        /* バツボタン */
+        .close-btn {
+            cursor: pointer;
+        }
 
-/* --- それぞれのウィンドウの配置場所 --- */
-.window-1 {
-    top: 25%;
-    left: 10%;
-}
+        .window-content {
+            padding: 15px;
+            font-size: 0.9rem;
+        }
 
-.window-2 {
-    top: 40%;
-    right: 15%;
-}
+        /* --- それぞれのウィンドウの配置場所 --- */
+        .window-1 {
+            top: 25%;
+            left: 10%;
+        }
+
+        .window-2 {
+            top: 40%;
+            right: 15%;
+        }
     </style>
 </head>
 <body>
@@ -174,43 +155,28 @@
     </div>
 
     <main>
-        <section class="box">
-            <h2>INFORMATION</h2>
-            <p>ここはテスト用のWebページです。レトロフューチャーでサイバーなデザインをHTMLとCSSで表現しています。</p>
-            <p>フォントにはGoogle Fontsの「DotGothic16」を使用しています。</p>
-        </section>
+        <!-- 疑似ウィンドウ 1 -->
+        <div class="fake-window window-1">
+            <div class="window-header">
+                <span>SYSTEM_ALERT.exe</span>
+                <span class="close-btn">×</span>
+            </div>
+            <div class="window-content">
+                <p>WARNING: 不正なアクセスを検知しました。</p>
+                <a href="#">[ 詳細を確認 ]</a>
+            </div>
+        </div>
 
-        <section class="box">
-            <h2>LINKS</h2>
-            <ul>
-                <li><a href="#">MUSIC VIDEO (YouTube)</a></li>
-                <li><a href="#">OFFICIAL GOODS STORE</a></li>
-            </ul>
-
-          <!-- 疑似ウィンドウ 1 -->
-<div class="fake-window window-1">
-    <div class="window-header">
-        <span>SYSTEM_ALERT.exe</span>
-        <span class="close-btn">×</span>
-    </div>
-    <div class="window-content">
-        <p>WARNING: 不正なアクセスを検知しました。</p>
-        <a href="#">[ 詳細を確認 ]</a>
-    </div>
-</div>
-
-<!-- 疑似ウィンドウ 2 -->
-<div class="fake-window window-2">
-    <div class="window-header">
-        <span>IMAGE_VIEWER</span>
-        <span class="close-btn">×</span>
-    </div>
-    <div class="window-content">
-        <p>NO SIGNAL...</p>
-    </div>
-</div>
-          
-        </section>
+        <!-- 疑似ウィンドウ 2 -->
+        <div class="fake-window window-2">
+            <div class="window-header">
+                <span>IMAGE_VIEWER</span>
+                <span class="close-btn">×</span>
+            </div>
+            <div class="window-content">
+                <p>NO SIGNAL...</p>
+            </div>
+        </div>
     </main>
 
     <script>
