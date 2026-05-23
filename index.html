@@ -135,6 +135,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: grab;
 }
 
 /* バツボタン */
@@ -211,5 +212,48 @@
           
         </section>
     </main>
+
+    <script>
+        // 画面内のすべての「疑似ウィンドウ」を取得
+        const windows = document.querySelectorAll('.fake-window');
+
+        windows.forEach(win => {
+            const header = win.querySelector('.window-header');
+            
+            let isDragging = false;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            // 1. ヘッダーの上でマウスのボタンが押し込まれた時
+            header.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                header.style.cursor = 'grabbing'; // つかんでいる手のアイコンに変更
+
+                // マウスの位置とウィンドウの左上の角とのズレを計算して記憶
+                const rect = win.getBoundingClientRect();
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+
+                // つかんだウィンドウを一番手前（一番上）に持ってくる
+                windows.forEach(w => w.style.zIndex = 100);
+                win.style.zIndex = 101;
+            });
+
+            // 2. マウスが画面内を動いている時
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return; // つかんでいない時は何もしない
+
+                // 記憶したズレを引いて、ウィンドウの新しい位置を決定
+                win.style.left = (e.clientX - offsetX) + 'px';
+                win.style.top = (e.clientY - offsetY) + 'px';
+            });
+
+            // 3. マウスのボタンを離した時
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                header.style.cursor = 'grab'; // 元の手のアイコンに戻す
+            });
+        });
+    </script>
 </body>
 </html>
