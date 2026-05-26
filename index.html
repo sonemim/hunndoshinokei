@@ -12,14 +12,25 @@
     <style>
         /* --- 全体のカラー設定 --- */
         :root {
-            --bg-color: #0a0a0a; /* 深い黒 */
+            --bg-color: #030303; /* 深い黒 */
+            --surface-color: #0a0a0a; /* ウィンドウ背景 */
             --text-color: #e0e0e0; /* 少し暗めの白 */
             --accent-color: #808080; /* 灰色 */
+            --border-color: #333333; /* 仕切り線 */
+            --divider-color: #ffffff; /* 明るい線 */
+            --grid-color: rgba(128, 128, 128, 0.5); /* グリッド線 */
+            --vignette-color: rgba(0, 0, 0, 0.95); /* 外周の暗さ */
+            --scanline-dark: rgba(0, 0, 0, 0.25);
+            --scanline-red: rgba(255, 0, 0, 0.06);
+            --scanline-green: rgba(0, 255, 0, 0.02);
+            --scanline-blue: rgba(0, 0, 255, 0.06);
+            --text-shadow-color: rgba(201, 255, 0, 0.5);
+            --box-shadow-color: rgba(201, 255, 0, 0.4);
         }
 
 /* ↓↓↓ bodyを丸ごと書き換え ↓↓↓ */
         body {
-            background-color: #030303; /* より吸い込まれるような深い黒に */
+            background-color: var(--bg-color); /* より吸い込まれるような深い黒に */
             color: var(--text-color);
             font-family: 'DotGothic16', sans-serif;
             margin: 0;
@@ -28,8 +39,8 @@
             
             /* 異空間の網目模様（グリッド） */
             background-image: 
-                linear-gradient(rgba(128, 128, 128, 0.5) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(128, 128, 128, 0.5) 1px, transparent 1px);
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
             background-size: 40px 40px;
             
             /* グリッドが斜めにゆっくり進むアニメーション */
@@ -48,7 +59,7 @@
         .vignette {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle, transparent 30%, rgba(0, 0, 0, 0.95) 100%);
+            background: radial-gradient(circle, transparent 30%, var(--vignette-color) 100%);
             pointer-events: none;
             z-index: 998; /* scanlinesのすぐ下に配置 */
         }
@@ -58,8 +69,8 @@
         .scanlines {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, var(--scanline-dark) 50%), 
+                        linear-gradient(90deg, var(--scanline-red), var(--scanline-green), var(--scanline-blue));
             background-size: 100% 3px, 3px 100%;
             pointer-events: none; /* クリックの邪魔にならないようにする */
             z-index: 999;
@@ -67,14 +78,14 @@
 
         /* --- ヘッダーとタイトル --- */
         header {
-            border-bottom: 2px dashed #333;
+            border-bottom: 2px dashed var(--border-color);
             padding: 30px 20px;
             text-align: center;
         }
 
         h1 {
             color: var(--accent-color);
-            text-shadow: 0 0 10px rgba(201, 255, 0, 0.5); /* ネオンの光彩エフェクト */
+            text-shadow: 0 0 10px var(--text-shadow-color); /* ネオンの光彩エフェクト */
             font-size: 2.5rem;
             letter-spacing: 8px;
             margin: 0;
@@ -87,7 +98,7 @@
             color: var(--bg-color);
             overflow: hidden;
             padding: 8px 0;
-            border-bottom: 1px solid #fff;
+            border-bottom: 1px solid var(--divider-color);
         }
 
         .ticker {
@@ -127,10 +138,10 @@
         /* --- 疑似ウィンドウの基本スタイル --- */
         .fake-window {
             position: absolute; /* 画面上の自由な位置に配置 */
-            background-color: var(--bg-color);
+            background-color: var(--surface-color);
             border: 2px solid var(--accent-color);
             width: 280px;
-            box-shadow: 4px 4px 0px rgba(201, 255, 0, 0.4); /* レトロな影 */
+            box-shadow: 4px 4px 0px var(--box-shadow-color); /* レトロな影 */
             z-index: 100;
         }
 
