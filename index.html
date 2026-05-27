@@ -24,6 +24,8 @@
             --scanline-light: rgba(128, 128, 128, 0.06);
             --text-shadow-color: rgba(128, 128, 128, 0.5);
             --box-shadow-color: rgba(128, 128, 128, 0.4);
+            --success-color: #228B22; /* 成功時の緑 */
+            --error-color: #DC143C; /* エラー時の赤 */
         }
 
 /* ↓↓↓ bodyを丸ごと書き換え ↓↓↓ */
@@ -139,17 +141,46 @@
             padding: 10px 15px 15px;
             border-top: 1px solid var(--border-color);
             background: rgba(128, 128, 128, 0.08);
+            display: flex;
+            gap: 8px;
+            align-items: stretch;
         }
 
         .window-footer input {
-            width: 100%;
+            flex: 1;
             padding: 5px 4px;
             background-color: var(--bg-color);
             color: var(--text-color);
-            border: 1px solid var(--accent-color);
+            border: 2px solid var(--accent-color);
             font-family: 'DotGothic16', sans-serif;
             font-size: 0.85rem;
             box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        .window-footer input.error {
+            border-color: var(--error-color);
+        }
+
+        .window-footer button {
+            padding: 5px 10px;
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.2s ease;
+        }
+
+        .window-footer button:active {
+            background-color: var(--text-color);
+        }
+
+        .window-header.success {
+            background-color: var(--success-color);
         }
 
         /* リサイズハンドル */
@@ -212,7 +243,7 @@
 
     <main>
         <!-- 疑似ウィンドウ 1 -->
-        <div class="fake-window window-1">
+        <div class="fake-window window-1" data-keyword="1">
             <div class="window-header">
                 <span>SYSTEM_ALERT.exe</span>
                 <span class="close-btn">×</span>
@@ -221,7 +252,8 @@
                 <img class="window-image" src="test1.jpg" alt="window 1 image">
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
