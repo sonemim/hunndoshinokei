@@ -477,8 +477,12 @@
         let resizeCorner = null;
         let offsetX = 0;
         let offsetY = 0;
+        let initialHandleX = 0;
+        let initialHandleY = 0;
         let initialX = 0;
         let initialY = 0;
+        let initialWidth = 0;
+        let initialHeight = 0;
 
         // === ウィンドウのドラッグ処理（ヘッダーをマウスダウン） ===
         header.addEventListener('mousedown', (e) => {
@@ -508,8 +512,17 @@
                 win.style.right = 'auto';
                 win.style.bottom = 'auto';
 
-                initialX = e.clientX;
-                initialY = e.clientY;
+                // ウィンドウの初期状態を記録
+                const rect = win.getBoundingClientRect();
+                initialX = rect.left;
+                initialY = rect.top;
+                initialWidth = rect.width;
+                initialHeight = rect.height;
+
+                // ハンドルの初期位置を記録
+                const handleRect = handle.getBoundingClientRect();
+                initialHandleX = handleRect.left + handleRect.width / 2;
+                initialHandleY = handleRect.top + handleRect.height / 2;
 
                 windows.forEach(w => w.style.zIndex = 100);
                 win.style.zIndex = 101;
@@ -527,33 +540,33 @@
             }
 
             if (isResizing) {
-                // リサイズ処理
-                const deltaX = e.clientX - initialX;
-                const deltaY = e.clientY - initialY;
+                // ハンドルの初期位置からのマウス移動量を計算
+                const deltaX = e.clientX - initialHandleX;
+                const deltaY = e.clientY - initialHandleY;
 
-                const rect = win.getBoundingClientRect();
-                let newWidth = rect.width;
-                let newHeight = rect.height;
-                let newLeft = rect.left;
-                let newTop = rect.top;
+                let newWidth = initialWidth;
+                let newHeight = initialHeight;
+                let newLeft = initialX;
+                let newTop = initialY;
 
                 // コーナーごとのリサイズロジック
+                // 外方向 = 拡大、内方向 = 縮小
                 if (resizeCorner === 'bottom-right') {
-                    newWidth = Math.max(MIN_WIDTH, newWidth + deltaX);
-                    newHeight = Math.max(MIN_HEIGHT, newHeight + deltaY);
+                    newWidth = Math.max(MIN_WIDTH, initialWidth + deltaX);
+                    newHeight = Math.max(MIN_HEIGHT, initialHeight + deltaY);
                 } else if (resizeCorner === 'bottom-left') {
-                    newWidth = Math.max(MIN_WIDTH, newWidth - deltaX);
-                    newHeight = Math.max(MIN_HEIGHT, newHeight + deltaY);
-                    newLeft = newLeft + deltaX;
+                    newWidth = Math.max(MIN_WIDTH, initialWidth - deltaX);
+                    newHeight = Math.max(MIN_HEIGHT, initialHeight + deltaY);
+                    newLeft = initialX + deltaX;
                 } else if (resizeCorner === 'top-right') {
-                    newWidth = Math.max(MIN_WIDTH, newWidth + deltaX);
-                    newHeight = Math.max(MIN_HEIGHT, newHeight - deltaY);
-                    newTop = newTop + deltaY;
+                    newWidth = Math.max(MIN_WIDTH, initialWidth + deltaX);
+                    newHeight = Math.max(MIN_HEIGHT, initialHeight - deltaY);
+                    newTop = initialY + deltaY;
                 } else if (resizeCorner === 'top-left') {
-                    newWidth = Math.max(MIN_WIDTH, newWidth - deltaX);
-                    newHeight = Math.max(MIN_HEIGHT, newHeight - deltaY);
-                    newLeft = newLeft + deltaX;
-                    newTop = newTop + deltaY;
+                    newWidth = Math.max(MIN_WIDTH, initialWidth - deltaX);
+                    newHeight = Math.max(MIN_HEIGHT, initialHeight - deltaY);
+                    newLeft = initialX + deltaX;
+                    newTop = initialY + deltaY;
                 }
 
                 // 新しいサイズと位置を適用
@@ -561,9 +574,6 @@
                 win.style.height = newHeight + 'px';
                 win.style.left = newLeft + 'px';
                 win.style.top = newTop + 'px';
-
-                initialX = e.clientX;
-                initialY = e.clientY;
             }
         });
 
