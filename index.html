@@ -115,6 +115,7 @@
             justify-content: space-between;
             align-items: center;
             cursor: grab;
+            touch-action: none; /* タッチでのドラッグを扱う（ページスクロールと競合しないように） */
         }
 
         /* バツボタン */
@@ -160,6 +161,7 @@
             border: 1px solid var(--text-color);
             cursor: pointer;
             z-index: 102;
+            touch-action: none; /* ハンドル上のタッチ操作を専有する */
         }
 
         .resize-handle.top-left {
@@ -473,10 +475,15 @@
         const handles = win.querySelectorAll('.resize-handle');
         
         let isDragging = false;
+        let dragPointerId = null;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+
         let isResizing = false;
+        let resizePointerId = null;
         let resizeCorner = null;
-        let offsetX = 0;
-        let offsetY = 0;
+        let resizingHandle = null;
+
         let initialHandleX = 0;
         let initialHandleY = 0;
         let initialX = 0;
@@ -484,27 +491,33 @@
         let initialWidth = 0;
         let initialHeight = 0;
 
-        // === ウィンドウのドラッグ処理（ヘッダーをマウスダウン） ===
-        header.addEventListener('mousedown', (e) => {
+        // ドラッグ開始（pointer対応）
+        header.addEventListener('pointerdown', (e) => {
+            if (e.button && e.button !== 0) return; // 非メインボタンは無視
             isDragging = true;
-            header.style.cursor = 'grabbing';
+            dragPointerId = e.pointerId;
+            try { header.setPointerCapture(dragPointerId); } catch (err) {}
 
             win.style.right = 'auto';
             win.style.bottom = 'auto';
 
             const rect = win.getBoundingClientRect();
-            offsetX = e.clientX - rect.left;
-            offsetY = e.clientY - rect.top;
+            dragOffsetX = e.clientX - rect.left;
+            dragOffsetY = e.clientY - rect.top;
 
             windows.forEach(w => w.style.zIndex = 100);
             win.style.zIndex = 101;
         });
 
-        // === リサイズハンドルの処理 ===
+        // リサイズ開始（pointer対応）
         handles.forEach(handle => {
-            handle.addEventListener('mousedown', (e) => {
-                e.stopPropagation(); // ドラッグとの競合を防止
+            handle.addEventListener('pointerdown', (e) => {
+                e.stopPropagation();
                 isResizing = true;
+                resizePointerId = e.pointerId;
+                resizingHandle = handle;
+                try { handle.setPointerCapture(resizePointerId); } catch (err) {}
+
                 resizeCorner = Array.from(handle.classList).find(c => 
                     c.match(/top-left|top-right|bottom-left|bottom-right/)
                 );
@@ -512,14 +525,12 @@
                 win.style.right = 'auto';
                 win.style.bottom = 'auto';
 
-                // ウィンドウの初期状態を記録
                 const rect = win.getBoundingClientRect();
                 initialX = rect.left;
                 initialY = rect.top;
                 initialWidth = rect.width;
                 initialHeight = rect.height;
 
-                // ハンドルの初期位置を記録
                 const handleRect = handle.getBoundingClientRect();
                 initialHandleX = handleRect.left + handleRect.width / 2;
                 initialHandleY = handleRect.top + handleRect.height / 2;
@@ -529,17 +540,16 @@
             });
         });
 
-        // === マウスムーブ（ドラッグまたはリサイズ） ===
-        document.addEventListener('mousemove', (e) => {
-            if (isDragging && !isResizing) {
-                // ドラッグ処理
-                const newLeft = e.clientX - offsetX + window.scrollX;
-                const newTop = e.clientY - offsetY + window.scrollY;
+        // pointermove でドラッグまたはリサイズを処理
+        document.addEventListener('pointermove', (e) => {
+            if (isDragging && !isResizing && e.pointerId === dragPointerId) {
+                const newLeft = e.clientX - dragOffsetX + window.scrollX;
+                const newTop = e.clientY - dragOffsetY + window.scrollY;
                 win.style.left = newLeft + 'px';
                 win.style.top = newTop + 'px';
             }
 
-            if (isResizing) {
+            if (isResizing && e.pointerId === resizePointerId) {
                 // ハンドルの初期位置からのマウス移動量を計算
                 const deltaX = e.clientX - initialHandleX;
                 const deltaY = e.clientY - initialHandleY;
@@ -549,8 +559,7 @@
                 let newLeft = initialX;
                 let newTop = initialY;
 
-                // コーナーごとのリサイズロジック
-                // 外方向 = 拡大、内方向 = 縮小
+                // コーナーごとのリサイズロジック（ハンドルから外方向＝拡大、内方向＝縮小）
                 if (resizeCorner === 'bottom-right') {
                     newWidth = Math.max(MIN_WIDTH, initialWidth + deltaX);
                     newHeight = Math.max(MIN_HEIGHT, initialHeight + deltaY);
@@ -569,7 +578,6 @@
                     newTop = initialY + deltaY;
                 }
 
-                // 新しいサイズと位置を適用
                 win.style.width = newWidth + 'px';
                 win.style.height = newHeight + 'px';
                 win.style.left = newLeft + 'px';
@@ -577,12 +585,34 @@
             }
         });
 
-        // === マウスアップ（ドラッグ・リサイズ終了） ===
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-            isResizing = false;
-            resizeCorner = null;
-            header.style.cursor = 'grab';
+        // pointerup / pointercancel で状態解除
+        document.addEventListener('pointerup', (e) => {
+            if (isDragging && e.pointerId === dragPointerId) {
+                isDragging = false;
+                try { header.releasePointerCapture(dragPointerId); } catch (err) {}
+                dragPointerId = null;
+                header.style.cursor = 'grab';
+            }
+
+            if (isResizing && e.pointerId === resizePointerId) {
+                isResizing = false;
+                try { resizingHandle && resizingHandle.releasePointerCapture(resizePointerId); } catch (err) {}
+                resizePointerId = null;
+                resizingHandle = null;
+            }
+        });
+
+        document.addEventListener('pointercancel', (e) => {
+            if (isDragging && e.pointerId === dragPointerId) {
+                isDragging = false;
+                dragPointerId = null;
+                header.style.cursor = 'grab';
+            }
+            if (isResizing && e.pointerId === resizePointerId) {
+                isResizing = false;
+                resizePointerId = null;
+                resizingHandle = null;
+            }
         });
     });
 </script>
