@@ -12,20 +12,18 @@
     <style>
         /* --- 全体のカラー設定 --- */
         :root {
-            --bg-color: #030303; /* 深い黒 */
-            --surface-color: #0a0a0a; /* ウィンドウ背景 */
-            --text-color: #e0e0e0; /* 少し暗めの白 */
+            --bg-color: #000000; /* 深い黒 */
+            --surface-color: #121212; /* ウィンドウ背景 */
+            --text-color: #d0d0d0; /* 明るい灰色 */
             --accent-color: #808080; /* 灰色 */
-            --border-color: #333333; /* 仕切り線 */
-            --divider-color: #ffffff; /* 明るい線 */
-            --grid-color: rgba(128, 128, 128, 0.5); /* グリッド線 */
+            --border-color: #444444; /* 仕切り線 */
+            --divider-color: #888888; /* 明るい線 */
+            --grid-color: rgba(128, 128, 128, 0.4); /* グリッド線 */
             --vignette-color: rgba(0, 0, 0, 0.95); /* 外周の暗さ */
             --scanline-dark: rgba(0, 0, 0, 0.25);
-            --scanline-red: rgba(255, 0, 0, 0.06);
-            --scanline-green: rgba(0, 255, 0, 0.02);
-            --scanline-blue: rgba(0, 0, 255, 0.06);
-            --text-shadow-color: rgba(201, 255, 0, 0.5);
-            --box-shadow-color: rgba(201, 255, 0, 0.4);
+            --scanline-light: rgba(128, 128, 128, 0.06);
+            --text-shadow-color: rgba(128, 128, 128, 0.5);
+            --box-shadow-color: rgba(128, 128, 128, 0.4);
         }
 
 /* ↓↓↓ bodyを丸ごと書き換え ↓↓↓ */
@@ -70,50 +68,10 @@
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, var(--scanline-dark) 50%), 
-                        linear-gradient(90deg, var(--scanline-red), var(--scanline-green), var(--scanline-blue));
+                        linear-gradient(90deg, var(--scanline-light), var(--scanline-light), var(--scanline-light));
             background-size: 100% 3px, 3px 100%;
             pointer-events: none; /* クリックの邪魔にならないようにする */
             z-index: 999;
-        }
-
-        /* --- ヘッダーとタイトル --- */
-        header {
-            border-bottom: 2px dashed var(--border-color);
-            padding: 30px 20px;
-            text-align: center;
-        }
-
-        h1 {
-            color: var(--accent-color);
-            text-shadow: 0 0 10px var(--text-shadow-color); /* ネオンの光彩エフェクト */
-            font-size: 2.5rem;
-            letter-spacing: 8px;
-            margin: 0;
-        }
-
-        /* --- 電光掲示板（ティッカー）アニメーション --- */
-        .ticker-wrap {
-            width: 100%;
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            overflow: hidden;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--divider-color);
-        }
-
-        .ticker {
-            display: inline-block;
-            white-space: nowrap;
-            padding-left: 100%;
-            animation: ticker 15s linear infinite;
-            font-weight: bold;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-        }
-
-        @keyframes ticker {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
         }
 
         /* --- メインコンテンツ --- */
@@ -164,8 +122,27 @@
         }
 
         .window-content {
-            padding: 15px;
+            padding: 0;
             font-size: 0.9rem;
+        }
+
+        .window-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .window-footer {
+            padding: 10px 15px 15px;
+            border-top: 1px solid var(--border-color);
+            background: rgba(128, 128, 128, 0.08);
+        }
+
+        .window-footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
         }
 
         /* --- それぞれのウィンドウの配置場所 --- */
@@ -190,16 +167,6 @@
     <div class="scanlines"></div>
     <div class="vignette"></div>
 
-    <header>
-        <h1>[ UNTITLED_PROJECT ]</h1>
-    </header>
-
-    <div class="ticker-wrap">
-        <div class="ticker">
-            +++ 2026.05.23 NEW WEBSITE LAUNCHED +++ HELLO WORLD +++ KEEP ON HACKING +++
-        </div>
-    </div>
-
     <main>
         <!-- 疑似ウィンドウ 1 -->
         <div class="fake-window window-1">
@@ -207,9 +174,11 @@
                 <span>SYSTEM_ALERT.exe</span>
                 <span class="close-btn">×</span>
             </div>
-            <div class="window-content">
-                <p>WARNING: 不正なアクセスを検知しました。</p>
-                <a href="#">[ 詳細を確認 ]</a>
+                <div class="window-content">
+                <img class="window-image" src="https://via.placeholder.com/260x140/808080/000000?text=WINDOW+1" alt="window 1 image">
+            </div>
+            <div class="window-footer">
+                <a href="?page=1">詳細ページへ</a>
             </div>
         </div>
 
@@ -220,7 +189,10 @@
                 <span class="close-btn">×</span>
             </div>
             <div class="window-content">
-                <p>NO SIGNAL...</p>
+                <img class="window-image" src="https://via.placeholder.com/260x140/808080/000000?text=WINDOW+2" alt="window 2 image">
+            </div>
+            <div class="window-footer">
+                <a href="?page=2">詳細ページへ</a>
             </div>
         </div>
         <!-- ↓↓↓ 追加：疑似ウィンドウ 3 ↓↓↓ -->
@@ -230,8 +202,10 @@
                 <span class="close-btn">×</span>
             </div>
             <div class="window-content">
-                <p>データの読み込みに成功しました...</p>
-                <a href="#">[ NEXT ]</a>
+                <img class="window-image" src="https://via.placeholder.com/260x140/808080/000000?text=WINDOW+3" alt="window 3 image">
+            </div>
+            <div class="window-footer">
+                <a href="?page=3">詳細ページへ</a>
             </div>
         </div>
         <!-- ↑↑↑ ここまで ↑↑↑ -->
