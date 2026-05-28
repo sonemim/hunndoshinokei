@@ -95,6 +95,18 @@
             color: var(--bg-color);
         }
 
+        /* --- ウィンドウのポップアップアニメーション --- */
+        @keyframes popIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
         /* --- 疑似ウィンドウの基本スタイル --- */
         .fake-window {
             position: absolute; /* 画面上の自由な位置に配置 */
@@ -104,6 +116,8 @@
             height: auto;
             box-shadow: 4px 4px 0px var(--box-shadow-color); /* レトロな影 */
             z-index: 100;
+            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            transform-origin: center center;
         }
 
         /* ウィンドウ上部のバー */
@@ -619,6 +633,16 @@
     };
 
     const windows = document.querySelectorAll('.fake-window');
+
+    // ウィンドウのポップアップアニメーション設定（2.5秒で順次表示）
+    const POPUP_DURATION = 2500; // ミリ秒
+    const WINDOW_COUNT = windows.length;
+    const delayPerWindow = POPUP_DURATION / (WINDOW_COUNT - 1);
+
+    windows.forEach((win, index) => {
+        const delay = index * delayPerWindow;
+        win.style.animationDelay = delay + 'ms';
+    });
 
     windows.forEach(win => {
         const header = win.querySelector('.window-header');
