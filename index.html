@@ -56,17 +56,6 @@
         }
 
         /* 画面の四隅を暗くしてモニターのような奥行きを出す（ビネット効果） */
-        .vignette {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at center, transparent 30%, var(--vignette-color) 100%);
-            pointer-events: none;
-            z-index: 998; /* scanlinesのすぐ下に配置 */
-            transform: translateZ(0);
-            will-change: transform;
-        }
-        /* ↑↑↑ ここまで追加 ↑↑↑ */
-
         /* --- メインコンテンツ --- */
         main {
             padding: 40px 20px;
@@ -285,7 +274,6 @@
     </style>
 </head>
 <body>
-    <div class="vignette"></div>
 
     <main>
         <!-- 疑似ウィンドウ 1 -->
