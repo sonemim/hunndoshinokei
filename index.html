@@ -601,6 +601,23 @@
         14: '14X'
     };
 
+    const TITLES = {
+        1: 'SYSTEM_ALERT.exe',
+        2: 'IMAGE_VIEWER',
+        3: 'NEW_PROCESS.bat',
+        4: 'PROCESS_04.exe',
+        5: 'SYSTEM_05.bat',
+        6: 'MONITOR_06.exe',
+        7: 'VIEWER_07.bat',
+        8: 'PROCESS_08.exe',
+        9: 'SYSTEM_09.bat',
+        10: 'MONITOR_10.exe',
+        11: 'VIEWER_11.bat',
+        12: 'PROCESS_12.exe',
+        13: 'SYSTEM_13.bat',
+        14: 'MONITOR_14.exe'
+    };
+
     const windows = document.querySelectorAll('.fake-window');
 
     windows.forEach(win => {
@@ -753,6 +770,13 @@
         const submitBtn = win.querySelector('.submit-btn');
         const windowClass = Array.from(win.classList).find(c => c.startsWith('window-'));
         const windowId = windowClass ? windowClass.split('-')[1] : null;
+
+        if (windowId) {
+            const titleSpan = header.querySelector('span');
+            if (titleSpan) {
+                titleSpan.textContent = TITLES[windowId] || titleSpan.textContent;
+            }
+        }
 
         if (keywordInput && submitBtn && windowId) {
             submitBtn.addEventListener('click', () => {
