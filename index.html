@@ -65,17 +65,6 @@
         }
         /* ↑↑↑ ここまで追加 ↑↑↑ */
 
-        /* --- ブラウン管（CRT）の走査線エフェクト --- */
-        .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, var(--scanline-dark) 50%), 
-                        linear-gradient(90deg, var(--scanline-light), var(--scanline-light), var(--scanline-light));
-            background-size: 100% 3px, 3px 100%;
-            pointer-events: none; /* クリックの邪魔にならないようにする */
-            z-index: 999;
-        }
-
         /* --- メインコンテンツ --- */
         main {
             padding: 40px 20px;
@@ -294,7 +283,6 @@
     </style>
 </head>
 <body>
-    <div class="scanlines"></div>
     <div class="vignette"></div>
 
     <main>
