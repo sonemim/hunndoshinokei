@@ -57,15 +57,13 @@
 
         /* 画面の四隅を暗くしてモニターのような奥行きを出す（ビネット効果） */
         .vignette {
-            position: absolute;
+            position: fixed;
             inset: 0;
-            width: 100%;
-            height: 100%;
-            min-width: 100%;
-            min-height: 100%;
             background: radial-gradient(circle at center, transparent 30%, var(--vignette-color) 100%);
             pointer-events: none;
             z-index: 998; /* scanlinesのすぐ下に配置 */
+            transform: translateZ(0);
+            will-change: transform;
         }
         /* ↑↑↑ ここまで追加 ↑↑↑ */
 
