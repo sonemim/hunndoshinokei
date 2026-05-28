@@ -128,6 +128,8 @@
         .window-content {
             padding: 0;
             font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
         }
 
         .window-image {
@@ -135,6 +137,33 @@
             width: 100%;
             height: auto;
             object-fit: cover;
+            transition: opacity 0.4s ease;
+        }
+
+        .window-content.unlocked .window-image {
+            opacity: 0;
+        }
+
+        .revealed-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(100% - 24px);
+            padding: 10px 12px;
+            color: var(--text-color);
+            text-align: center;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            pointer-events: none;
+        }
+
+        .window-content.unlocked .revealed-text {
+            opacity: 1;
+            visibility: visible;
         }
 
         .window-footer {
@@ -177,6 +206,17 @@
 
         .window-footer button:active {
             background-color: var(--text-color);
+        }
+
+        .window-footer input:disabled {
+            background-color: rgba(255, 255, 255, 0.04);
+            border-color: rgba(128, 128, 128, 0.6);
+            color: rgba(208, 208, 208, 0.7);
+        }
+
+        .window-footer button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .window-header.success {
@@ -250,6 +290,7 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test1.jpg" alt="window 1 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
                 <input type="text" placeholder="入力してください" class="keyword-input">
@@ -269,9 +310,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test2.jpg" alt="window 2 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -287,9 +330,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test3.jpg" alt="window 3 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -305,9 +350,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test4.jpg" alt="window 4 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -323,9 +370,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test5.jpg" alt="window 5 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -341,9 +390,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test6.jpg" alt="window 6 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -359,9 +410,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test7.jpg" alt="window 7 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -377,9 +430,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test8.jpg" alt="window 8 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -395,9 +450,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test9.jpg" alt="window 9 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -413,9 +470,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test10.jpg" alt="window 10 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -431,9 +490,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test11.jpg" alt="window 11 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -449,9 +510,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test12.jpg" alt="window 12 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -467,9 +530,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test13.jpg" alt="window 13 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -485,9 +550,11 @@
             </div>
             <div class="window-content">
                 <img class="window-image" src="test14.jpg" alt="window 14 image">
+                <div class="revealed-text"></div>
             </div>
             <div class="window-footer">
-                <input type="text" placeholder="入力してください">
+                <input type="text" placeholder="入力してください" class="keyword-input">
+                <button class="submit-btn">決定</button>
             </div>
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -499,6 +566,40 @@
 <script>
     const MIN_WIDTH = 200;  // 最小幅
     const MIN_HEIGHT = 180; // 最小高さ
+
+    const KEYWORDS = {
+        1: '1',
+        2: '2',
+        3: '3',
+        4: '4',
+        5: '5',
+        6: '6',
+        7: '7',
+        8: '8',
+        9: '9',
+        10: '10',
+        11: '11',
+        12: '12',
+        13: '13',
+        14: '14'
+    };
+
+    const KEYSENTENCE = {
+        1: '1X',
+        2: '2X',
+        3: '3X',
+        4: '4X',
+        5: '5X',
+        6: '6X',
+        7: '7X',
+        8: '8X',
+        9: '9X',
+        10: '10X',
+        11: '11X',
+        12: '12X',
+        13: '13X',
+        14: '14X'
+    };
 
     const windows = document.querySelectorAll('.fake-window');
 
@@ -646,6 +747,41 @@
                 resizingHandle = null;
             }
         });
+
+        // キーワード検証と状態表示
+        const keywordInput = win.querySelector('.keyword-input');
+        const submitBtn = win.querySelector('.submit-btn');
+        const windowClass = Array.from(win.classList).find(c => c.startsWith('window-'));
+        const windowId = windowClass ? windowClass.split('-')[1] : null;
+
+        if (keywordInput && submitBtn && windowId) {
+            submitBtn.addEventListener('click', () => {
+                const keyword = KEYWORDS[windowId];
+                const value = keywordInput.value.trim();
+
+                keywordInput.classList.remove('error');
+
+                if (value === keyword) {
+                    header.classList.add('success');
+                    const content = win.querySelector('.window-content');
+                    const revealedText = content.querySelector('.revealed-text');
+                    if (revealedText) {
+                        revealedText.textContent = KEYSENTENCE[windowId] || '';
+                    }
+                    content.classList.add('unlocked');
+                    keywordInput.value = '';
+                    keywordInput.disabled = true;
+                    submitBtn.disabled = true;
+                } else {
+                    keywordInput.classList.add('error');
+                    setTimeout(() => keywordInput.classList.remove('error'), 1200);
+                }
+            });
+
+            keywordInput.addEventListener('input', () => {
+                keywordInput.classList.remove('error');
+            });
+        }
     });
 </script>
 </body>
