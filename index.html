@@ -766,23 +766,32 @@
 
         if (keywordInput && submitBtn && windowId) {
             submitBtn.addEventListener('click', () => {
-                const keyword = KEYWORDS[windowId];
                 const value = keywordInput.value.trim();
-
                 keywordInput.classList.remove('error');
 
-                if (value === keyword) {
-                    header.classList.add('success');
-                    const content = win.querySelector('.window-content');
-                    const revealedText = content.querySelector('.revealed-text');
-                    if (revealedText) {
-                        revealedText.textContent = KEYSENTENCE[windowId] || '';
+                if (!value) {
+                    keywordInput.classList.add('error');
+                    setTimeout(() => keywordInput.classList.remove('error'), 1200);
+                    return;
+                }
+
+                try {
+                    const decrypted = CryptoJS.AES.decrypt(KEYSENTENCE[windowId], value);
+                    const decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
+
+                    if (decryptedText) {
+                        header.classList.add('success');
+                        const content = win.querySelector('.window-content');
+                        const revealedText = content.querySelector('.revealed-text');
+                        revealedText.textContent = decryptedText;
+                        content.classList.add('unlocked');
+                        keywordInput.value = '';
+                        keywordInput.disabled = true;
+                        submitBtn.disabled = true;
+                    } else {
+                        throw new Error('Decryption failed');
                     }
-                    content.classList.add('unlocked');
-                    keywordInput.value = '';
-                    keywordInput.disabled = true;
-                    submitBtn.disabled = true;
-                } else {
+                } catch (e) {
                     keywordInput.classList.add('error');
                     setTimeout(() => keywordInput.classList.remove('error'), 1200);
                 }
