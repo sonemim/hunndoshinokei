@@ -7,7 +7,7 @@
 </head>
 <body style="background:#222; color:#fff; font-family:sans-serif; padding:20px;">
   <h2>一括暗号化ツール</h2>
-  <p>以下のテキストボックスに表示されているのが、パスワード「hal」で暗号化された新しい「KEYSENTENCE」です。<br>
+  <p>以下のテキストボックスに表示されているのが、個別のパスワードで暗号化された新しい「KEYSENTENCE」です。<br>
   これをすべてコピーして、index.html に上書きしてください。</p>
   
   <textarea id="result" style="width:100%; height:500px; background:#111; color:#0f0; padding:10px; font-family:monospace;"></textarea>
@@ -51,7 +51,7 @@
 
     let outputStr = "const KEYSENTENCE = {\n";
     for (let key in originalData) {
-      // 1件ずつ「hal」で暗号化して文字列にする処理
+      // 1件ずつ、PASSWORDSオブジェクト内の対応するパスワードで暗号化して文字列にする処理
       const encrypted = CryptoJS.AES.encrypt(originalData[key], PASSWORDS[key]).toString();
       outputStr += `    ${key}: '${encrypted}',\n`;
     }
